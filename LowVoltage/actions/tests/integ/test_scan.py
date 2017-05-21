@@ -10,10 +10,10 @@ class ScanLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def setUp(self):
         super(ScanLocalIntegTests, self).setUp()
         self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"0", "v": 0},
-            {"h": u"1", "v": 1},
-            {"h": u"2", "v": 2},
-            {"h": u"3", "v": 3},
+            {"h": "0", "v": 0},
+            {"h": "1", "v": 1},
+            {"h": "2", "v": 2},
+            {"h": "3", "v": 3},
         ))
 
     def test_simple_scan(self):
@@ -23,7 +23,7 @@ class ScanLocalIntegTests(_tst.LocalIntegTestsWithTableH):
 
         self.assertEqual(r.count, 4)
         items = sorted((r.items[i] for i in range(4)), key=lambda i: i["h"])
-        self.assertEqual(items, [{"h": u"0", "v": 0}, {"h": u"1", "v": 1}, {"h": u"2", "v": 2}, {"h": u"3", "v": 3}])
+        self.assertEqual(items, [{"h": "0", "v": 0}, {"h": "1", "v": 1}, {"h": "2", "v": 2}, {"h": "3", "v": 3}])
         self.assertEqual(r.last_evaluated_key, None)
         self.assertEqual(r.scanned_count, 4)
 
@@ -33,32 +33,32 @@ class ScanLocalIntegTests(_tst.LocalIntegTestsWithTableH):
             _lv.Scan("Aaa").segment(0, 2).limit(1)
         )
         r02 = self.connection(
-            _lv.Scan("Aaa").segment(0, 2).exclusive_start_key({"h": u"1"})
+            _lv.Scan("Aaa").segment(0, 2).exclusive_start_key({"h": "1"})
         )
         r11 = self.connection(
             _lv.Scan("Aaa").segment(1, 2).limit(1)
         )
         r12 = self.connection(
-            _lv.Scan("Aaa").segment(1, 2).exclusive_start_key({"h": u"0"})
+            _lv.Scan("Aaa").segment(1, 2).exclusive_start_key({"h": "0"})
         )
 
         self.assertEqual(r01.count, 1)
-        self.assertEqual(r01.items[0], {"h": u"1", "v": 1})
-        self.assertEqual(r01.last_evaluated_key, {"h": u"1"})
+        self.assertEqual(r01.items[0], {"h": "1", "v": 1})
+        self.assertEqual(r01.last_evaluated_key, {"h": "1"})
         self.assertEqual(r01.scanned_count, 1)
 
         self.assertEqual(r02.count, 1)
-        self.assertEqual(r02.items[0], {"h": u"3", "v": 3})
+        self.assertEqual(r02.items[0], {"h": "3", "v": 3})
         self.assertEqual(r02.last_evaluated_key, None)
         self.assertEqual(r02.scanned_count, 1)
 
         self.assertEqual(r11.count, 1)
-        self.assertEqual(r11.items[0], {"h": u"0", "v": 0})
-        self.assertEqual(r11.last_evaluated_key, {"h": u"0"})
+        self.assertEqual(r11.items[0], {"h": "0", "v": 0})
+        self.assertEqual(r11.last_evaluated_key, {"h": "0"})
         self.assertEqual(r11.scanned_count, 1)
 
         self.assertEqual(r12.count, 1)
-        self.assertEqual(r12.items[0], {"h": u"2", "v": 2})
+        self.assertEqual(r12.items[0], {"h": "2", "v": 2})
         self.assertEqual(r12.last_evaluated_key, None)
         self.assertEqual(r12.scanned_count, 1)
 
@@ -68,8 +68,8 @@ class ScanLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         )
 
         self.assertEqual(r.count, 2)
-        self.assertEqual(r.items[0], {"h": u"3"})
-        self.assertEqual(r.items[1], {"h": u"2"})
+        self.assertEqual(r.items[0], {"h": "3"})
+        self.assertEqual(r.items[1], {"h": "2"})
         self.assertEqual(r.last_evaluated_key, None)
         self.assertEqual(r.scanned_count, 4)
 

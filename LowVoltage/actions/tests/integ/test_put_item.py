@@ -8,38 +8,38 @@ import LowVoltage.testing as _tst
 
 class PutItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def test_simple_put(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"simple"}))
+        self.connection(_lv.PutItem("Aaa", {"h": "simple"}))
 
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"simple"})).item, {"h": u"simple"})
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "simple"})).item, {"h": "simple"})
 
     def test_put_all_types(self):
         self.connection(_lv.PutItem("Aaa", {
-            "h": u"all",
+            "h": "all",
             "number": 42,
-            "string": u"àoé",
+            "string": "àoé",
             "binary": b"\xFF\x00\xFF",
             "bool 1": True,
             "bool 2": False,
             "null": None,
             "number set": set([42, 43]),
-            "string set": set([u"éoà", u"bar"]),
+            "string set": set(["éoà", "bar"]),
             "binary set": set([b"\xFF", b"\xAB"]),
             "list": [True, 42],
             "map": {"a": True, "b": 42},
         }))
 
         self.assertEqual(
-            self.connection(_lv.GetItem("Aaa", {"h": u"all"})).item,
+            self.connection(_lv.GetItem("Aaa", {"h": "all"})).item,
             {
-                "h": u"all",
+                "h": "all",
                 "number": 42,
-                "string": u"àoé",
+                "string": "àoé",
                 "binary": b"\xFF\x00\xFF",
                 "bool 1": True,
                 "bool 2": False,
                 "null": None,
                 "number set": set([42, 43]),
-                "string set": set([u"éoà", u"bar"]),
+                "string set": set(["éoà", "bar"]),
                 "binary set": set([b"\xFF", b"\xAB"]),
                 "list": [True, 42],
                 "map": {"a": True, "b": 42},
@@ -47,13 +47,13 @@ class PutItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         )
 
     def test_return_old_values(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"return", "a": b"yyy"}))
+        self.connection(_lv.PutItem("Aaa", {"h": "return", "a": b"yyy"}))
 
         r = self.connection(
-            _lv.PutItem("Aaa", {"h": u"return", "b": b"xxx"}).return_values_all_old()
+            _lv.PutItem("Aaa", {"h": "return", "b": b"xxx"}).return_values_all_old()
         )
 
-        self.assertEqual(r.attributes, {"h": u"return", "a": b"yyy"})
+        self.assertEqual(r.attributes, {"h": "return", "a": b"yyy"})
 
 
 class PutItemConnectedIntegTests(_tst.ConnectedIntegTestsWithTable):

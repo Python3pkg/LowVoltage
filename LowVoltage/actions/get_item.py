@@ -233,7 +233,7 @@ class GetItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_none(self):
         self.assertEqual(
-            GetItem("Table", {"hash": u"h"}).return_consumed_capacity_none().payload,
+            GetItem("Table", {"hash": "h"}).return_consumed_capacity_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -243,7 +243,7 @@ class GetItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_total(self):
         self.assertEqual(
-            GetItem("Table", {"hash": u"h"}).return_consumed_capacity_total().payload,
+            GetItem("Table", {"hash": "h"}).return_consumed_capacity_total().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -253,7 +253,7 @@ class GetItemUnitTests(_tst.UnitTests):
 
     def test_consistent_read_true(self):
         self.assertEqual(
-            GetItem("Table", {"hash": u"h"}).consistent_read_true().payload,
+            GetItem("Table", {"hash": "h"}).consistent_read_true().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -263,7 +263,7 @@ class GetItemUnitTests(_tst.UnitTests):
 
     def test_consistent_read_false(self):
         self.assertEqual(
-            GetItem("Table", {"hash": u"h"}).consistent_read_false().payload,
+            GetItem("Table", {"hash": "h"}).consistent_read_false().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -273,7 +273,7 @@ class GetItemUnitTests(_tst.UnitTests):
 
     def test_project(self):
         self.assertEqual(
-            GetItem("Table", {"hash": u"h"}).project("abc").payload,
+            GetItem("Table", {"hash": "h"}).project("abc").payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -302,4 +302,4 @@ class GetItemResponseUnitTests(_tst.UnitTests):
         unprocessed_keys = object()
         r = GetItemResponse(ConsumedCapacity={}, Item={"h": {"S": "a"}})
         self.assertIsInstance(r.consumed_capacity, ConsumedCapacity)
-        self.assertEqual(r.item, {"h": u"a"})
+        self.assertEqual(r.item, {"h": "a"})

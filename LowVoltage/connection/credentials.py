@@ -153,27 +153,27 @@ class Ec2RoleCredentialsUnitTests(_tst.UnitTestsWithMocks):
 
         self.now = self.mocks.replace("credentials._Ec2RoleCredentials__now")
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 12, 30, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 12, 30, 0))
         self.session.expect.get("http://169.254.169.254/latest/meta-data/iam/security-credentials/RoleName").andReturn(self.response.object)
         self.response.expect.json().andReturn({"AccessKeyId": "key1", "SecretAccessKey": "secret1", "Token": "token1", "Expiration": "2015-04-24T15:00:30Z"})
 
         self.assertEqual(credentials.get(), ("key1", "secret1", "token1"))
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 12, 31, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 12, 31, 0))
         self.assertEqual(credentials.get(), ("key1", "secret1", "token1"))
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 13, 29, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 13, 29, 0))
         self.assertEqual(credentials.get(), ("key1", "secret1", "token1"))
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 13, 30, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 13, 30, 0))
         self.session.expect.get("http://169.254.169.254/latest/meta-data/iam/security-credentials/RoleName").andReturn(self.response.object)
         self.response.expect.json().andReturn({"AccessKeyId": "key2", "SecretAccessKey": "secret2", "Token": "token3", "Expiration": "2015-04-24T14:00:30Z"})
         self.assertEqual(credentials.get(), ("key2", "secret2", "token3"))
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 13, 45, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 13, 45, 0))
         self.assertEqual(credentials.get(), ("key2", "secret2", "token3"))
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 13, 46, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 13, 46, 0))
         self.session.expect.get("http://169.254.169.254/latest/meta-data/iam/security-credentials/RoleName").andReturn(self.response.object)
         self.response.expect.json().andReturn({"AccessKeyId": "key3", "SecretAccessKey": "secret3", "Token": "token3", "Expiration": "2015-04-24T18:00:30Z"})
         self.assertEqual(credentials.get(), ("key3", "secret3", "token3"))
@@ -198,7 +198,7 @@ class Ec2RoleCredentialsUnitTests(_tst.UnitTestsWithMocks):
 
         self.now = self.mocks.replace("credentials._Ec2RoleCredentials__now")
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 12, 30, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 12, 30, 0))
         self.session.expect.get("http://169.254.169.254/latest/meta-data/iam/security-credentials/RoleName").andRaise(requests.exceptions.RequestException)
 
         with self.assertRaises(_exn.NetworkError):
@@ -212,7 +212,7 @@ class Ec2RoleCredentialsUnitTests(_tst.UnitTestsWithMocks):
 
         self.now = self.mocks.replace("credentials._Ec2RoleCredentials__now")
 
-        self.now.expect().andReturn(datetime.datetime(2015, 04, 24, 12, 30, 0))
+        self.now.expect().andReturn(datetime.datetime(2015, 0o4, 24, 12, 30, 0))
         self.session.expect.get("http://169.254.169.254/latest/meta-data/iam/security-credentials/RoleName").andRaise(Exception)
 
         with self.assertRaises(_exn.UnknownError):

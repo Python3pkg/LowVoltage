@@ -7,7 +7,7 @@ import LowVoltage.testing as _tst
 
 
 class ScanIteratorLocalIntegTests(_tst.LocalIntegTestsWithTableH):
-    keys = [u"{:03}".format(k) for k in range(15)]
+    keys = ["{:03}".format(k) for k in range(15)]
 
     def setUp(self):
         super(ScanIteratorLocalIntegTests, self).setUp()

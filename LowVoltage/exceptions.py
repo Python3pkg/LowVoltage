@@ -271,5 +271,5 @@ client_errors = sorted(
         ("UnknownOperationException", UnknownOperationException),
         ("UnrecognizedClientException", UnrecognizedClientException),
     ],
-    key=lambda (prefix, cls): -len(prefix)
+    key=lambda prefix_cls: -len(prefix_cls[0])
 )

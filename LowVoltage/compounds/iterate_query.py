@@ -47,7 +47,7 @@ class IterateQueryUnitTests(_tst.UnitTestsWithMocks):
         ).andReturn(
             _lv.QueryResponse(
                 Items=[{"h": {"N": "0"}, "r": {"S": "foo"}}, {"h": {"N": "0"}, "r": {"S": "bar"}}],
-                LastEvaluatedKey={"h": {"N": "0"}, "r": {"S": u"bar"}},
+                LastEvaluatedKey={"h": {"N": "0"}, "r": {"S": "bar"}},
             )
         )
         self.connection.expect._call_.withArguments(

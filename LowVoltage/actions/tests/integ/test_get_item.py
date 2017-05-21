@@ -8,16 +8,16 @@ import LowVoltage.testing as _tst
 
 class GetItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def test_simple_get(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"get", "a": "yyy"}))
+        self.connection(_lv.PutItem("Aaa", {"h": "get", "a": "yyy"}))
 
-        r = self.connection(_lv.GetItem("Aaa", {"h": u"get"}))
+        r = self.connection(_lv.GetItem("Aaa", {"h": "get"}))
 
         self.assertEqual(r.item, {"h": "get", "a": "yyy"})
 
     def test_get_with_projections(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"attrs", "a": "yyy", "b": {"c": ["d1", "d2", "d3"]}, "e": 42, "f": "nope"}))
+        self.connection(_lv.PutItem("Aaa", {"h": "attrs", "a": "yyy", "b": {"c": ["d1", "d2", "d3"]}, "e": 42, "f": "nope"}))
 
-        r = self.connection(_lv.GetItem("Aaa", {"h": u"attrs"}).project("b.c[1]", "e"))
+        r = self.connection(_lv.GetItem("Aaa", {"h": "attrs"}).project("b.c[1]", "e"))
 
         self.assertEqual(r.item, {"b": {"c": ["d2"]}, "e": 42})
 

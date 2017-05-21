@@ -13,7 +13,7 @@ def _is_dict(d):
 
 
 def _is_str(s):
-    return isinstance(s, basestring)
+    return isinstance(s, str)
 
 
 def _is_float(s):
@@ -21,7 +21,7 @@ def _is_float(s):
 
 
 def _is_int(s):
-    return isinstance(s, (int, long))
+    return isinstance(s, int)
 
 
 def _is_list_of_dict(l):
@@ -96,7 +96,7 @@ class TableDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__item_count):
-            return long(self.__item_count)
+            return int(self.__item_count)
 
     @property
     def key_schema(self):
@@ -136,7 +136,7 @@ class TableDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__table_size_bytes):
-            return long(self.__table_size_bytes)
+            return int(self.__table_size_bytes)
 
     @property
     def table_status(self):
@@ -267,7 +267,7 @@ class GlobalSecondaryIndexDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__index_size_bytes):
-            return long(self.__index_size_bytes)
+            return int(self.__index_size_bytes)
 
     @property
     def index_status(self):
@@ -283,7 +283,7 @@ class GlobalSecondaryIndexDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__item_count):
-            return long(self.__item_count)
+            return int(self.__item_count)
 
     @property
     def key_schema(self):
@@ -425,7 +425,7 @@ class ProvisionedThroughputDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__number_of_decreases_today):
-            return long(self.__number_of_decreases_today)
+            return int(self.__number_of_decreases_today)
 
     @property
     def read_capacity_units(self):
@@ -433,7 +433,7 @@ class ProvisionedThroughputDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__read_capacity_units):
-            return long(self.__read_capacity_units)
+            return int(self.__read_capacity_units)
 
     @property
     def write_capacity_units(self):
@@ -441,7 +441,7 @@ class ProvisionedThroughputDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__write_capacity_units):
-            return long(self.__write_capacity_units)
+            return int(self.__write_capacity_units)
 
 
 class ProvisionedThroughputDescriptionUnitTests(_tst.UnitTests):
@@ -545,7 +545,7 @@ class LocalSecondaryIndexDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__index_size_bytes):
-            return long(self.__index_size_bytes)
+            return int(self.__index_size_bytes)
 
     @property
     def item_count(self):
@@ -553,7 +553,7 @@ class LocalSecondaryIndexDescription(object):
         :type: ``None`` or long
         """
         if _is_int(self.__item_count):
-            return long(self.__item_count)
+            return int(self.__item_count)
 
     @property
     def key_schema(self):
@@ -634,7 +634,7 @@ class ConsumedCapacity(object):
         :type: ``None`` or dict of string (index name) to :class:`.Capacity`
         """
         if _is_dict(self.__global_secondary_indexes):
-            return {n: Capacity(**v) for n, v in self.__global_secondary_indexes.iteritems()}
+            return {n: Capacity(**v) for n, v in self.__global_secondary_indexes.items()}
 
     @property
     def local_secondary_indexes(self):
@@ -644,7 +644,7 @@ class ConsumedCapacity(object):
         :type: ``None`` or dict of string (index name) to :class:`.Capacity`
         """
         if _is_dict(self.__local_secondary_indexes):
-            return {n: Capacity(**v) for n, v in self.__local_secondary_indexes.iteritems()}
+            return {n: Capacity(**v) for n, v in self.__local_secondary_indexes.items()}
 
     @property
     def table(self):

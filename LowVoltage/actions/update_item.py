@@ -105,13 +105,13 @@ class UpdateItem(Action):
         data = {}
         update = []
         if self.__set:
-            update.append("SET {}".format(", ".join("{}={}".format(n, v) for n, v in self.__set.iteritems())))
+            update.append("SET {}".format(", ".join("{}={}".format(n, v) for n, v in self.__set.items())))
         if self.__remove:
             update.append("REMOVE {}".format(", ".join(self.__remove)))
         if self.__add:
-            update.append("ADD {}".format(", ".join("{} :{}".format(n, v) for n, v in self.__add.iteritems())))
+            update.append("ADD {}".format(", ".join("{} :{}".format(n, v) for n, v in self.__add.items())))
         if self.__delete:
-            update.append("DELETE {}".format(", ".join("{} :{}".format(n, v) for n, v in self.__delete.iteritems())))
+            update.append("DELETE {}".format(", ".join("{} :{}".format(n, v) for n, v in self.__delete.items())))
         if update:
             data["UpdateExpression"] = " ".join(update)
         data.update(self.__condition_expression.payload)
@@ -511,7 +511,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_expression_attribute_value(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": 42}).expression_attribute_value("v", u"value").payload,
+            UpdateItem("Table", {"hash": 42}).expression_attribute_value("v", "value").payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"N": "42"}},
@@ -541,7 +541,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_values_all_new(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_values_all_new().payload,
+            UpdateItem("Table", {"hash": "h"}).return_values_all_new().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -551,7 +551,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_values_all_old(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_values_all_old().payload,
+            UpdateItem("Table", {"hash": "h"}).return_values_all_old().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -561,7 +561,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_values_updated_new(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_values_updated_new().payload,
+            UpdateItem("Table", {"hash": "h"}).return_values_updated_new().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -571,7 +571,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_values_updated_old(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_values_updated_old().payload,
+            UpdateItem("Table", {"hash": "h"}).return_values_updated_old().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -581,7 +581,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_values_none(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_values_none().payload,
+            UpdateItem("Table", {"hash": "h"}).return_values_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -591,7 +591,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_total(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_consumed_capacity_total().payload,
+            UpdateItem("Table", {"hash": "h"}).return_consumed_capacity_total().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -601,7 +601,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_indexes(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_consumed_capacity_indexes().payload,
+            UpdateItem("Table", {"hash": "h"}).return_consumed_capacity_indexes().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -611,7 +611,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_none(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_consumed_capacity_none().payload,
+            UpdateItem("Table", {"hash": "h"}).return_consumed_capacity_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -621,7 +621,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_item_collection_metrics_size(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_item_collection_metrics_size().payload,
+            UpdateItem("Table", {"hash": "h"}).return_item_collection_metrics_size().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -631,7 +631,7 @@ class UpdateItemUnitTests(_tst.UnitTests):
 
     def test_return_item_collection_metrics_none(self):
         self.assertEqual(
-            UpdateItem("Table", {"hash": u"h"}).return_item_collection_metrics_none().payload,
+            UpdateItem("Table", {"hash": "h"}).return_item_collection_metrics_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},

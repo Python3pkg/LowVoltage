@@ -13,11 +13,11 @@ All examples in this doc depend on:
 >>> connection = Connection("us-west-2", EnvironmentCredentials())
 """
 
-from actions import *
-from attribute_types import *
-from compounds import *
-from connection import *
-from exceptions import *
+from .actions import *
+from .attribute_types import *
+from .compounds import *
+from .connection import *
+from .exceptions import *
 
 # @todo __str__ and __repr__
 # @todo create builder for attribute paths

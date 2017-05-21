@@ -78,7 +78,7 @@ class QueryResponse(object):
         :type: ``None`` or long
         """
         if _is_int(self.__count):
-            return long(self.__count)
+            return int(self.__count)
 
     @property
     def items(self):
@@ -110,14 +110,15 @@ class QueryResponse(object):
         :type: ``None`` or long
         """
         if _is_int(self.__scanned_count):
-            return long(self.__scanned_count)
+            return int(self.__scanned_count)
 
 
 class KeyConditions(OptionalDictParameter):
     def __init__(self, parent):
         super(KeyConditions, self).__init__("KeyConditions", parent)
 
-    def _convert(self, (operator, values)):
+    def _convert(self, xxx_todo_changeme):
+        (operator, values) = xxx_todo_changeme
         return {
             "ComparisonOperator": operator,
             "AttributeValueList": [_convert_value_to_db(value) for value in values]
@@ -562,7 +563,7 @@ class QueryUnitTests(_tst.UnitTests):
 
     def test_key_begins_with(self):
         self.assertEqual(
-            Query("Aaa").key_begins_with("name", u"prefix").payload,
+            Query("Aaa").key_begins_with("name", "prefix").payload,
             {
                 "TableName": "Aaa",
                 "KeyConditions": {"name": {"ComparisonOperator": "BEGINS_WITH", "AttributeValueList": [{"S": "prefix"}]}},
@@ -579,7 +580,7 @@ class QueryUnitTests(_tst.UnitTests):
         )
 
     def test_exclusive_start_key(self):
-        self.assertEqual(Query("Aaa").exclusive_start_key({"h": u"v"}).payload, {"TableName": "Aaa", "ExclusiveStartKey": {"h": {"S": "v"}}})
+        self.assertEqual(Query("Aaa").exclusive_start_key({"h": "v"}).payload, {"TableName": "Aaa", "ExclusiveStartKey": {"h": {"S": "v"}}})
 
     def test_limit(self):
         self.assertEqual(Query("Aaa").limit(4).payload, {"TableName": "Aaa", "Limit": 4})
@@ -597,7 +598,7 @@ class QueryUnitTests(_tst.UnitTests):
         self.assertEqual(Query("Aaa").expression_attribute_name("n", "p").payload, {"TableName": "Aaa", "ExpressionAttributeNames": {"#n": "p"}})
 
     def test_expression_attribute_value(self):
-        self.assertEqual(Query("Aaa").expression_attribute_value("n", u"p").payload, {"TableName": "Aaa", "ExpressionAttributeValues": {":n": {"S": "p"}}})
+        self.assertEqual(Query("Aaa").expression_attribute_value("n", "p").payload, {"TableName": "Aaa", "ExpressionAttributeValues": {":n": {"S": "p"}}})
 
     def test_project(self):
         self.assertEqual(Query("Aaa").project("a").payload, {"TableName": "Aaa", "ProjectionExpression": "a"})

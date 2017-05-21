@@ -81,7 +81,7 @@ class DynamoDbResourceManager(TestResourceManager):
 class ConnectedIntegTestsWithTable(ConnectedIntegTests):
     resources = [("table", DynamoDbResourceManager())]
 
-    item = {"tab_h": u"0", "tab_r": 0, "gsi_h": u"1", "gsi_r": 1, "lsi_r": 2}
-    tab_key = {"tab_h": u"0", "tab_r": 0}
-    gsi_key = {"gsi_h": u"1", "gsi_r": 1}
-    lsi_key = {"tab_h": u"0", "lsi_r": 2}
+    item = {"tab_h": "0", "tab_r": 0, "gsi_h": "1", "gsi_r": 1, "lsi_r": 2}
+    tab_key = {"tab_h": "0", "tab_r": 0}
+    gsi_key = {"gsi_h": "1", "gsi_r": 1}
+    lsi_key = {"tab_h": "0", "lsi_r": 2}

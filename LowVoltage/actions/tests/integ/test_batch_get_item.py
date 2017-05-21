@@ -9,60 +9,60 @@ import LowVoltage.testing as _tst
 class BatchGetItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def test_simple_batch_get(self):
         self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"1", "a": "xxx"},
-            {"h": u"2", "a": "yyy"},
-            {"h": u"3", "a": "zzz"},
+            {"h": "1", "a": "xxx"},
+            {"h": "2", "a": "yyy"},
+            {"h": "3", "a": "zzz"},
         ))
 
-        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": u"1"}, {"h": u"2"}, {"h": u"3"}))
+        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": "1"}, {"h": "2"}, {"h": "3"}))
 
-        self.assertEqual(r.responses.keys(), ["Aaa"])
+        self.assertEqual(list(r.responses.keys()), ["Aaa"])
         self.assertEqual(
             sorted(r.responses["Aaa"], key=lambda i: i["h"]),
-            [{"h": u"1", "a": "xxx"}, {"h": u"2", "a": "yyy"}, {"h": u"3", "a": "zzz"}]
+            [{"h": "1", "a": "xxx"}, {"h": "2", "a": "yyy"}, {"h": "3", "a": "zzz"}]
         )
 
     def test_batch_get_with_projections(self):
         self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"1", "a": "a1", "b": "b1", "c": "c1"},
-            {"h": u"2", "a": "a2", "b": "b2", "c": "c2"},
-            {"h": u"3", "a": "a3", "b": "b3", "c": "c3"},
+            {"h": "1", "a": "a1", "b": "b1", "c": "c1"},
+            {"h": "2", "a": "a2", "b": "b2", "c": "c2"},
+            {"h": "3", "a": "a3", "b": "b3", "c": "c3"},
         ))
 
         r = self.connection(
-            _lv.BatchGetItem().table("Aaa").keys({"h": u"1"}, {"h": u"2"}, {"h": u"3"}).expression_attribute_name("p", "b").project("h").project("a", ["#p"])
+            _lv.BatchGetItem().table("Aaa").keys({"h": "1"}, {"h": "2"}, {"h": "3"}).expression_attribute_name("p", "b").project("h").project("a", ["#p"])
         )
         self.assertEqual(
             sorted(r.responses["Aaa"], key=lambda i: i["h"]),
-            [{"h": u"1", "a": "a1", "b": "b1"}, {"h": u"2", "a": "a2", "b": "b2"}, {"h": u"3", "a": "a3", "b": "b3"}]
+            [{"h": "1", "a": "a1", "b": "b1"}, {"h": "2", "a": "a2", "b": "b2"}, {"h": "3", "a": "a3", "b": "b3"}]
         )
 
     def test_get_unexisting_keys(self):
         self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"1", "a": "xxx"},
-            {"h": u"2", "a": "yyy"},
+            {"h": "1", "a": "xxx"},
+            {"h": "2", "a": "yyy"},
         ))
 
-        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": u"1"}, {"h": u"2"}, {"h": u"3"}))
+        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": "1"}, {"h": "2"}, {"h": "3"}))
 
         self.assertEqual(
             sorted(r.responses["Aaa"], key=lambda i: i["h"]),
-            [{"h": u"1", "a": "xxx"}, {"h": u"2", "a": "yyy"}]
+            [{"h": "1", "a": "xxx"}, {"h": "2", "a": "yyy"}]
         )
         self.assertEqual(r.unprocessed_keys, {})
 
     def test_get_without_unprocessed_keys(self):
-        _lv.batch_put_item(self.connection, "Aaa", [{"h": unicode(i)} for i in range(100)])
+        _lv.batch_put_item(self.connection, "Aaa", [{"h": str(i)} for i in range(100)])
 
-        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": unicode(i)} for i in range(100)))
+        r = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": str(i)} for i in range(100)))
 
         self.assertEqual(r.unprocessed_keys, {})
         self.assertEqual(len(r.responses["Aaa"]), 100)
 
     def test_get_with_unprocessed_keys(self):
-        _lv.batch_put_item(self.connection, "Aaa", [{"h": unicode(i), "xs": "x" * 300000} for i in range(100)])  # 300kB items ensure a single BatchGetItem will return at most 55 items
+        _lv.batch_put_item(self.connection, "Aaa", [{"h": str(i), "xs": "x" * 300000} for i in range(100)])  # 300kB items ensure a single BatchGetItem will return at most 55 items
 
-        r1 = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": unicode(i)} for i in range(100)))
+        r1 = self.connection(_lv.BatchGetItem().table("Aaa").keys({"h": str(i)} for i in range(100)))
 
         self.assertEqual(len(r1.unprocessed_keys["Aaa"]["Keys"]), 45)
         self.assertEqual(len(r1.responses["Aaa"]), 55)

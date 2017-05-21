@@ -52,7 +52,7 @@ class BatchPutItemUnitTests(_tst.UnitTestsWithMocks):
             _lv.BatchWriteItemResponse()
         )
 
-        batch_put_item(self.connection.object, "Aaa", {"h": u"a"}, {"h": u"b"})
+        batch_put_item(self.connection.object, "Aaa", {"h": "a"}, {"h": "b"})
 
     def test_several_pages(self):
         self.connection.expect._call_.withArguments(
@@ -85,7 +85,7 @@ class BatchPutItemUnitTests(_tst.UnitTestsWithMocks):
             _lv.BatchWriteItemResponse()
         )
 
-        batch_put_item(self.connection.object, "Aaa", {"h": u"a"}, {"h": u"b"})
+        batch_put_item(self.connection.object, "Aaa", {"h": "a"}, {"h": "b"})
 
     def test_several_pages_of_unprocessed_item(self):
         self.connection.expect._call_.withArguments(

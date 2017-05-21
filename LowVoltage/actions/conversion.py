@@ -98,12 +98,12 @@ import LowVoltage.testing as _tst
 def _convert_dict_to_db(attributes):
     return {
         key: _convert_value_to_db(val)
-        for key, val in attributes.iteritems()
+        for key, val in attributes.items()
     }
 
 
 def _convert_value_to_db(value):
-    if isinstance(value, unicode):
+    if isinstance(value, str):
         return {"S": value}
     elif isinstance(value, bytes):
         return {"B": base64.b64encode(value).decode("utf8")}
@@ -118,7 +118,7 @@ def _convert_value_to_db(value):
             raise TypeError
         elif all(isinstance(v, numbers.Integral) for v in value):
             return {"NS": [str(n) for n in value]}
-        elif all(isinstance(v, unicode) for v in value):
+        elif all(isinstance(v, str) for v in value):
             return {"SS": [s for s in value]}
         elif all(isinstance(v, bytes) for v in value):
             return {"BS": [base64.b64encode(b).decode("utf8") for b in value]}
@@ -127,7 +127,7 @@ def _convert_value_to_db(value):
     elif isinstance(value, list):
         return {"L": [_convert_value_to_db(v) for v in value]}
     elif isinstance(value, dict):
-        return {"M": {n: _convert_value_to_db(v) for n, v in value.iteritems()}}
+        return {"M": {n: _convert_value_to_db(v) for n, v in value.items()}}
     else:
         raise TypeError
 
@@ -135,7 +135,7 @@ def _convert_value_to_db(value):
 def _convert_db_to_dict(attributes):
     return {
         key: _convert_db_to_value(val)
-        for key, val in attributes.iteritems()
+        for key, val in attributes.items()
     }
 
 
@@ -159,17 +159,17 @@ def _convert_db_to_value(value):
     elif "L" in value:
         return [_convert_db_to_value(v) for v in value["L"]]
     elif "M" in value:
-        return {n: _convert_db_to_value(v) for n, v in value["M"].iteritems()}
+        return {n: _convert_db_to_value(v) for n, v in value["M"].items()}
     else:
         raise TypeError
 
 
 class ConversionUnitTests(_tst.UnitTests):
     def test_convert_unicode_value_to_db(self):
-        self.assertEqual(_convert_value_to_db(u"éoà"), {"S": u"éoà"})
+        self.assertEqual(_convert_value_to_db("éoà"), {"S": "éoà"})
 
     def test_convert_bytes_value_to_db(self):
-        self.assertEqual(_convert_value_to_db(b"\xFF\x00\xAB"), {"B": u"/wCr"})
+        self.assertEqual(_convert_value_to_db(b"\xFF\x00\xAB"), {"B": "/wCr"})
 
     def test_convert_bool_value_to_db(self):
         self.assertEqual(_convert_value_to_db(True), {"BOOL": True})
@@ -188,10 +188,10 @@ class ConversionUnitTests(_tst.UnitTests):
         self.assertIn(_convert_value_to_db(frozenset([42, 43])), [{"NS": ["42", "43"]}, {"NS": ["43", "42"]}])
 
     def test_convert_set_of_unicode_value_to_db(self):
-        self.assertIn(_convert_value_to_db(set([u"éoà", u"bar"])), [{"SS": [u"éoà", u"bar"]}, {"SS": [u"bar", u"éoà"]}])
+        self.assertIn(_convert_value_to_db(set(["éoà", "bar"])), [{"SS": ["éoà", "bar"]}, {"SS": ["bar", "éoà"]}])
 
     def test_convert_set_of_byte_value_to_db(self):
-        self.assertIn(_convert_value_to_db(set([b"\xFF\x00\xAB", b"bar"])), [{"BS": [u"/wCr", u"YmFy"]}, {"BS": [u"YmFy", u"/wCr"]}])
+        self.assertIn(_convert_value_to_db(set([b"\xFF\x00\xAB", b"bar"])), [{"BS": ["/wCr", "YmFy"]}, {"BS": ["YmFy", "/wCr"]}])
 
     def test_convert_list_value_to_db(self):
         self.assertEqual(_convert_value_to_db([True, 42]), {"L": [{"BOOL": True}, {"N": "42"}]})
@@ -216,10 +216,10 @@ class ConversionUnitTests(_tst.UnitTests):
             _convert_value_to_db((1, 2))
 
     def test_convert_db_to_unicode_value(self):
-        self.assertEqual(_convert_db_to_value({"S": u"éoà"}), u"éoà")
+        self.assertEqual(_convert_db_to_value({"S": "éoà"}), "éoà")
 
     def test_convert_db_to_bytes_value(self):
-        self.assertEqual(_convert_db_to_value({"B": u"/wCr"}), b"\xFF\x00\xAB")
+        self.assertEqual(_convert_db_to_value({"B": "/wCr"}), b"\xFF\x00\xAB")
 
     def test_convert_db_to_bool_value(self):
         self.assertEqual(_convert_db_to_value({"BOOL": True}), True)
@@ -235,10 +235,10 @@ class ConversionUnitTests(_tst.UnitTests):
         self.assertEqual(_convert_db_to_value({"NS": ["42", "43"]}), set([42, 43]))
 
     def test_convert_db_to_set_of_unicode_value(self):
-        self.assertEqual(_convert_db_to_value({"SS": [u"éoà", u"bar"]}), set([u"éoà", u"bar"]))
+        self.assertEqual(_convert_db_to_value({"SS": ["éoà", "bar"]}), set(["éoà", "bar"]))
 
     def test_convert_db_to_set_of_byte_value(self):
-        self.assertEqual(_convert_db_to_value({"BS": [u"/wCr", u"YmFy"]}), set([b"\xFF\x00\xAB", b"bar"]))
+        self.assertEqual(_convert_db_to_value({"BS": ["/wCr", "YmFy"]}), set([b"\xFF\x00\xAB", b"bar"]))
 
     def test_convert_db_to_list_value(self):
         self.assertEqual(_convert_db_to_value({"L": [{"BOOL": True}, {"N": "42"}]}), [True, 42])

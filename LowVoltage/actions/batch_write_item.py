@@ -60,7 +60,7 @@ class BatchWriteItemResponse(object):
         :type: ``None`` or dict of string (table name) to list of :class:`.ItemCollectionMetrics`
         """
         if _is_dict(self.__item_collection_metrics):
-            return {n: [ItemCollectionMetrics(**m) for m in v] for n, v in self.__item_collection_metrics.iteritems()}
+            return {n: [ItemCollectionMetrics(**m) for m in v] for n, v in self.__item_collection_metrics.items()}
 
     @property
     def unprocessed_items(self):
@@ -101,7 +101,7 @@ class BatchWriteItem(Action):
         if self.__previous_unprocessed_items:
             data["RequestItems"] = self.__previous_unprocessed_items
         if self.__tables:
-            data["RequestItems"] = {n: t.payload for n, t in self.__tables.iteritems()}
+            data["RequestItems"] = {n: t.payload for n, t in self.__tables.items()}
         data.update(self.__return_consumed_capacity.payload)
         data.update(self.__return_item_collection_metrics.payload)
         return data
@@ -335,7 +335,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_constuctor_with_table(self):
         self.assertEqual(
-            BatchWriteItem("Table").delete({"hash": u"h1"}).payload,
+            BatchWriteItem("Table").delete({"hash": "h1"}).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -347,7 +347,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_constuctor_with_table_and_delete(self):
         self.assertEqual(
-            BatchWriteItem("Table", delete=[{"hash": u"h1"}]).payload,
+            BatchWriteItem("Table", delete=[{"hash": "h1"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -359,7 +359,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_constuctor_with_table_and_put(self):
         self.assertEqual(
-            BatchWriteItem("Table", put=[{"hash": u"h1"}]).payload,
+            BatchWriteItem("Table", put=[{"hash": "h1"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -371,7 +371,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_table_with_delete(self):
         self.assertEqual(
-            BatchWriteItem().table("Table", delete=[{"hash": u"h1"}, {"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table", delete=[{"hash": "h1"}, {"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -384,7 +384,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_table_with_delete_twice(self):
         self.assertEqual(
-            BatchWriteItem().table("Table", delete=[{"hash": u"h1"}]).table("Table", delete=[{"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table", delete=[{"hash": "h1"}]).table("Table", delete=[{"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -397,7 +397,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_table_with_put(self):
         self.assertEqual(
-            BatchWriteItem().table("Table", put=[{"hash": u"h1"}, {"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table", put=[{"hash": "h1"}, {"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -410,7 +410,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_table_with_put_twice(self):
         self.assertEqual(
-            BatchWriteItem().table("Table", put=[{"hash": u"h1"}]).table("Table", put=[{"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table", put=[{"hash": "h1"}]).table("Table", put=[{"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -423,7 +423,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_delete(self):
         self.assertEqual(
-            BatchWriteItem().table("Table").delete({"hash": u"h1"}).table("Table").delete([{"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table").delete({"hash": "h1"}).table("Table").delete([{"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -436,7 +436,7 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
 
     def test_put(self):
         self.assertEqual(
-            BatchWriteItem().table("Table").put({"hash": u"h1"}, [{"hash": u"h2"}]).payload,
+            BatchWriteItem().table("Table").put({"hash": "h1"}, [{"hash": "h2"}]).payload,
             {
                 "RequestItems": {
                     "Table": [
@@ -450,10 +450,10 @@ class BatchWriteItemUnitTests(_tst.UnitTests):
     def test_alternate_between_tables_and_put_delete(self):
         self.assertEqual(
             BatchWriteItem()
-                .table("Table1").delete({"hash": u"h1"})
-                .table("Table2").put([{"hash": u"h2"}])
-                .table("Table1").put({"hash": u"h11"})
-                .table("Table2").delete({"hash": u"h22"})
+                .table("Table1").delete({"hash": "h1"})
+                .table("Table2").put([{"hash": "h2"}])
+                .table("Table1").put({"hash": "h11"})
+                .table("Table2").delete({"hash": "h22"})
                 .payload,
             {
                 "RequestItems": {

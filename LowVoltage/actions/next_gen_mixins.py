@@ -89,7 +89,7 @@ class ValueParameterMixin(object):
 
 class IntParameterMixin(plain_parameter_mixin(numbers.Integral)): pass
 class BoolParameterMixin(plain_parameter_mixin(bool)): pass
-class StringParameterMixin(plain_parameter_mixin(basestring)): pass
+class StringParameterMixin(plain_parameter_mixin(str)): pass
 
 
 class OptionalItemParameter(OptionalScalarParameter, ItemParameterMixin): pass
@@ -250,7 +250,7 @@ class ProjectionExpression(object):
             data["ProjectionExpression"] = ", ".join(self.__names)
         return data
 
-    @variadic(basestring)
+    @variadic(str)
     def add(self, *names):
         """
         Add name(s) to ProjectionExpression.
@@ -404,7 +404,7 @@ def proxy(*proxy_args):
         assert inspect.getargspec(method) == inspect.getargspec(base), method
         method.__doc__ = base.__doc__.format(*format_args) + "\n" + method.__doc__
 
-    if len(proxy_args) != 1 or isinstance(proxy_args[0], basestring):
+    if len(proxy_args) != 1 or isinstance(proxy_args[0], str):
         def decorator(method):
             patch(method, proxy_args)
             return method

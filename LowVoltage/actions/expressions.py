@@ -20,7 +20,7 @@ class _BooleanExpression(_Boolean):
     def __init__(self, left, operator, right):
         if not isinstance(left, _Boolean):
             raise TypeError
-        if not isinstance(operator, basestring):
+        if not isinstance(operator, str):
             raise TypeError
         if not isinstance(right, _Boolean):
             raise TypeError
@@ -46,7 +46,7 @@ class _ComparisonExpression(_Boolean):
     def __init__(self, left, operator, right):
         if not isinstance(left, _Atom):
             raise TypeError
-        if not isinstance(operator, basestring):
+        if not isinstance(operator, str):
             raise TypeError
         if not isinstance(right, _Atom):
             raise TypeError
@@ -80,7 +80,7 @@ class _Atom(object):
 
 class Attr(_Atom):
     def __init__(self, name):
-        if not isinstance(name, basestring):
+        if not isinstance(name, str):
             raise TypeError
         self.__name = name
 
@@ -90,7 +90,7 @@ class Attr(_Atom):
 
 class Val(_Atom):
     def __init__(self, label):
-        if not isinstance(label, basestring):
+        if not isinstance(label, str):
             raise TypeError
         self.__label = label
 
@@ -129,7 +129,7 @@ class Between(_Boolean):
 
 class AttributeExists(_Boolean):
     def __init__(self, name):
-        if not isinstance(name, basestring):
+        if not isinstance(name, str):
             raise TypeError
         self.__name = name
 

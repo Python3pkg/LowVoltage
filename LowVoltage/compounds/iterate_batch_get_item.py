@@ -64,7 +64,7 @@ class IterateBatchGetItemUnitTests(_tst.UnitTestsWithMocks):
         )
 
         self.assertEqual(
-            list(_lv.iterate_batch_get_item(self.connection.object, "Aaa", {"h": u"a"}, {"h": u"b"})),
+            list(_lv.iterate_batch_get_item(self.connection.object, "Aaa", {"h": "a"}, {"h": "b"})),
             [{"h": "c"}, {"h": "d"}]
         )
 
@@ -81,7 +81,7 @@ class IterateBatchGetItemUnitTests(_tst.UnitTestsWithMocks):
         )
 
         self.assertEqual(
-            list(_lv.iterate_batch_get_item(self.connection.object, "Aaa", {"h": u"a"}, {"h": u"b"})),
+            list(_lv.iterate_batch_get_item(self.connection.object, "Aaa", {"h": "a"}, {"h": "b"})),
             [{"h": "c"}, {"h": "e"}]
         )
 

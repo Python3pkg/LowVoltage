@@ -8,7 +8,7 @@ import LowVoltage.testing as _tst
 
 class BatchDeleteItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def key(self, i):
-        return u"{:03}".format(i)
+        return "{:03}".format(i)
 
     def setUp(self):
         super(BatchDeleteItemLocalIntegTests, self).setUp()

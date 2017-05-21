@@ -281,7 +281,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_values_none(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_values_none().payload,
+            DeleteItem("Table", {"hash": "h"}).return_values_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -291,7 +291,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_values_all_old(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_values_all_old().payload,
+            DeleteItem("Table", {"hash": "h"}).return_values_all_old().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -301,7 +301,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_total(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_consumed_capacity_total().payload,
+            DeleteItem("Table", {"hash": "h"}).return_consumed_capacity_total().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -311,7 +311,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_indexes(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_consumed_capacity_indexes().payload,
+            DeleteItem("Table", {"hash": "h"}).return_consumed_capacity_indexes().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -321,7 +321,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_consumed_capacity_none(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_consumed_capacity_none().payload,
+            DeleteItem("Table", {"hash": "h"}).return_consumed_capacity_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -331,7 +331,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_item_collection_metrics_size(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_item_collection_metrics_size().payload,
+            DeleteItem("Table", {"hash": "h"}).return_item_collection_metrics_size().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -341,7 +341,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_return_item_collection_metrics_none(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": u"h"}).return_item_collection_metrics_none().payload,
+            DeleteItem("Table", {"hash": "h"}).return_item_collection_metrics_none().payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"S": "h"}},
@@ -351,7 +351,7 @@ class DeleteItemUnitTests(_tst.UnitTests):
 
     def test_expression_attribute_value(self):
         self.assertEqual(
-            DeleteItem("Table", {"hash": 42}).expression_attribute_value("v", u"value").payload,
+            DeleteItem("Table", {"hash": 42}).expression_attribute_value("v", "value").payload,
             {
                 "TableName": "Table",
                 "Key": {"hash": {"N": "42"}},

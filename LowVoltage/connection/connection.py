@@ -6,7 +6,7 @@ import datetime
 import hashlib
 import hmac
 import json
-import urlparse
+import urllib.parse
 import time
 
 import requests
@@ -43,7 +43,7 @@ class Connection(object):
         self.__region = region
         self.__credentials = credentials
         self.__endpoint = endpoint
-        self.__host = urlparse.urlparse(self.__endpoint).hostname
+        self.__host = urllib.parse.urlparse(self.__endpoint).hostname
         self.__retry_policy = retry_policy
         self.__session = requests_session
 
@@ -249,7 +249,7 @@ class Signer(object):
 
         header_names = ";".join(k.lower() for k in sorted(headers.keys()))
         request = "POST\n/\n\n{}\n{}\n{}".format(
-            "".join("{}:{}\n".format(k.lower(), v) for k, v in sorted(headers.iteritems())),
+            "".join("{}:{}\n".format(k.lower(), v) for k, v in sorted(headers.items())),
             header_names,
             hashlib.sha256(payload.encode("utf-8")).hexdigest(),
         )

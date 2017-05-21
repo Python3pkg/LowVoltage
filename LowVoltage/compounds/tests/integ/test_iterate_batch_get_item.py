@@ -8,7 +8,7 @@ import LowVoltage.testing as _tst
 
 class IterateBatchGetItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def key(self, i):
-        return u"{:03}".format(i)
+        return "{:03}".format(i)
 
     def setUp(self):
         super(IterateBatchGetItemLocalIntegTests, self).setUp()

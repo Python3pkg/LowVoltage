@@ -9,31 +9,31 @@ import LowVoltage.testing as _tst
 class BatchWriteItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def test_simple_batch_put(self):
         r = self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"1", "a": "xxx"},
-            {"h": u"2", "a": "yyy"},
-            {"h": u"3", "a": "zzz"},
+            {"h": "1", "a": "xxx"},
+            {"h": "2", "a": "yyy"},
+            {"h": "3", "a": "zzz"},
         ))
 
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"1"})).item, {"h": "1", "a": "xxx"})
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"2"})).item, {"h": "2", "a": "yyy"})
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"3"})).item, {"h": "3", "a": "zzz"})
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "1"})).item, {"h": "1", "a": "xxx"})
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "2"})).item, {"h": "2", "a": "yyy"})
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "3"})).item, {"h": "3", "a": "zzz"})
 
     def test_simple_batch_delete(self):
         self.connection(_lv.BatchWriteItem().table("Aaa").put(
-            {"h": u"1", "a": "xxx"},
-            {"h": u"2", "a": "yyy"},
-            {"h": u"3", "a": "zzz"},
+            {"h": "1", "a": "xxx"},
+            {"h": "2", "a": "yyy"},
+            {"h": "3", "a": "zzz"},
         ))
 
         r = self.connection(_lv.BatchWriteItem().table("Aaa").delete(
-            {"h": u"1"},
-            {"h": u"2"},
-            {"h": u"3"}
+            {"h": "1"},
+            {"h": "2"},
+            {"h": "3"}
         ))
 
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"1"})).item, None)
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"2"})).item, None)
-        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": u"3"})).item, None)
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "1"})).item, None)
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "2"})).item, None)
+        self.assertEqual(self.connection(_lv.GetItem("Aaa", {"h": "3"})).item, None)
 
 
 class BatchWriteItemConnectedIntegTests(_tst.ConnectedIntegTestsWithTable):

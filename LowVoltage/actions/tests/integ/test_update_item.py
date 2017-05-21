@@ -9,7 +9,7 @@ import LowVoltage.testing as _tst
 class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def test_set(self):
         r = self.connection(
-            _lv.UpdateItem("Aaa", {"h": u"set"})
+            _lv.UpdateItem("Aaa", {"h": "set"})
                 .set("a", ":v")
                 .set("#p", ":w")
                 .expression_attribute_value("v", "aaa")
@@ -18,7 +18,7 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         )
 
         self.assertEqual(
-            self.connection(_lv.GetItem("Aaa", {"h": u"set"})).item,
+            self.connection(_lv.GetItem("Aaa", {"h": "set"})).item,
             {"h": "set", "a": "aaa", "b": "bbb"}
         )
 
@@ -27,7 +27,7 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
             _lv.PutItem(
                 "Aaa",
                 {
-                    "h": u"complex",
+                    "h": "complex",
                     "a": "a",
                     "b": "b",
                     "c": "c",
@@ -40,7 +40,7 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         )
 
         r = self.connection(
-            _lv.UpdateItem("Aaa", {"h": u"complex"})
+            _lv.UpdateItem("Aaa", {"h": "complex"})
                 .set("a", ":s")
                 .set("b", ":i")
                 .remove("c")
@@ -56,7 +56,7 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         self.assertEqual(
             r.attributes,
             {
-                "h": u"complex",
+                "h": "complex",
                 "a": set([42, 43]),
                 "b": 52,
                 "d": set([41, 42, 43]),
@@ -67,10 +67,10 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
         )
 
     def test_condition_expression(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"expr", "a": 42, "b": 42}))
+        self.connection(_lv.PutItem("Aaa", {"h": "expr", "a": 42, "b": 42}))
 
         r = self.connection(
-            _lv.UpdateItem("Aaa", {"h": u"expr"})
+            _lv.UpdateItem("Aaa", {"h": "expr"})
                 .set("checked", ":true")
                 .expression_attribute_value("true", True)
                 .condition_expression("a=b")
@@ -79,16 +79,16 @@ class UpdateItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
 
         self.assertEqual(
             r.attributes,
-            {"h": u"expr", "a": 42, "b": 42, "checked": True}
+            {"h": "expr", "a": 42, "b": 42, "checked": True}
         )
 
     def test_add_and_delete_from_same_set(self):
-        self.connection(_lv.PutItem("Aaa", {"h": u"expr", "a": {1, 2, 3}}))
+        self.connection(_lv.PutItem("Aaa", {"h": "expr", "a": {1, 2, 3}}))
 
         # A bit sad: you can't add to and delete from the same set
         with self.assertRaises(_lv.ValidationException):
             self.connection(
-                _lv.UpdateItem("Aaa", {"h": u"expr"})
+                _lv.UpdateItem("Aaa", {"h": "expr"})
                     .delete("a", "three")
                     .add("a", "four")
                     .expression_attribute_value("three", {3})
@@ -118,7 +118,7 @@ class UpdateItemConnectedIntegTests(_tst.ConnectedIntegTestsWithTable):
     def test_return_consumed_capacity_indexes(self):
         r = self.connection(
             _lv.UpdateItem(self.table, self.tab_key)
-                .set("gsi_h", ":gsi_h").expression_attribute_value("gsi_h", u"1")
+                .set("gsi_h", ":gsi_h").expression_attribute_value("gsi_h", "1")
                 .set("gsi_r", ":gsi_r").expression_attribute_value("gsi_r", 1)
                 .set("lsi_r", ":lsi_r").expression_attribute_value("lsi_r", 2)
                 .return_consumed_capacity_indexes()
@@ -146,7 +146,7 @@ class UpdateItemConnectedIntegTests(_tst.ConnectedIntegTestsWithTable):
     def test_return_consumed_capacity_indexes_with_globally_indexed_attribute_only(self):
         r = self.connection(
             _lv.UpdateItem(self.table, self.tab_key)
-                .set("gsi_h", ":gsi_h").expression_attribute_value("gsi_h", u"1")
+                .set("gsi_h", ":gsi_h").expression_attribute_value("gsi_h", "1")
                 .set("gsi_r", ":gsi_r").expression_attribute_value("gsi_r", 1)
                 .return_consumed_capacity_indexes()
         )
@@ -164,6 +164,6 @@ class UpdateItemConnectedIntegTests(_tst.ConnectedIntegTestsWithTable):
                 .return_item_collection_metrics_size()
         )
 
-        self.assertEqual(r.item_collection_metrics.item_collection_key, {"tab_h": u"0"})
+        self.assertEqual(r.item_collection_metrics.item_collection_key, {"tab_h": "0"})
         self.assertEqual(r.item_collection_metrics.size_estimate_range_gb[0], 0.0)
         self.assertEqual(r.item_collection_metrics.size_estimate_range_gb[1], 1.0)

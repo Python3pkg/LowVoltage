@@ -70,7 +70,7 @@ class BatchGetItemResponse(object):
         :type: ``None`` or dict of string (table name) to list of dict
         """
         if _is_dict(self.__responses):
-            return {t: [_convert_db_to_dict(v) for v in vs] for t, vs in self.__responses.iteritems()}
+            return {t: [_convert_db_to_dict(v) for v in vs] for t, vs in self.__responses.items()}
 
     @property
     def unprocessed_keys(self):
@@ -111,7 +111,7 @@ class BatchGetItem(Action):
         if self.__previous_unprocessed_keys:
             data["RequestItems"] = self.__previous_unprocessed_keys
         if self.__tables:
-            data["RequestItems"] = {n: t.payload for n, t in self.__tables.iteritems()}
+            data["RequestItems"] = {n: t.payload for n, t in self.__tables.items()}
         data.update(self.__return_consumed_capacity.payload)
         return data
 
@@ -327,7 +327,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_constructor_with_table(self):
         self.assertEqual(
-            BatchGetItem("Table").keys({"h": u"1"}, {"h": u"2"}).payload,
+            BatchGetItem("Table").keys({"h": "1"}, {"h": "2"}).payload,
             {
                 "RequestItems": {
                     "Table": {
@@ -342,7 +342,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_constructor_with_keys(self):
         self.assertEqual(
-            BatchGetItem("Table", {"h": u"1"}, {"h": u"2"}).payload,
+            BatchGetItem("Table", {"h": "1"}, {"h": "2"}).payload,
             {
                 "RequestItems": {
                     "Table": {
@@ -357,7 +357,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_constructor_with_keys_in_list(self):
         self.assertEqual(
-            BatchGetItem("Table", [{"h": u"1"}, {"h": u"2"}]).payload,
+            BatchGetItem("Table", [{"h": "1"}, {"h": "2"}]).payload,
             {
                 "RequestItems": {
                     "Table": {
@@ -372,7 +372,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_table_keys(self):
         self.assertEqual(
-            BatchGetItem().table("Table", {"h": u"1"}, {"h": u"2"}).payload,
+            BatchGetItem().table("Table", {"h": "1"}, {"h": "2"}).payload,
             {
                 "RequestItems": {
                     "Table": {
@@ -387,7 +387,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_table_keys_twice(self):
         self.assertEqual(
-            BatchGetItem().table("Table", {"h": u"1"}).table("Table", {"h": u"2"}).payload,
+            BatchGetItem().table("Table", {"h": "1"}).table("Table", {"h": "2"}).payload,
             {
                 "RequestItems": {
                     "Table": {
@@ -402,7 +402,7 @@ class BatchGetItemUnitTests(_tst.UnitTests):
 
     def test_keys(self):
         self.assertEqual(
-            BatchGetItem().table("Table2").keys({"hash": u"h21"}).table("Table1").keys({"hash": u"h11"}, {"hash": u"h12"}).table("Table2").keys([{"hash": u"h22"}, {"hash": u"h23"}]).payload,
+            BatchGetItem().table("Table2").keys({"hash": "h21"}).table("Table1").keys({"hash": "h11"}, {"hash": "h12"}).table("Table2").keys([{"hash": "h22"}, {"hash": "h23"}]).payload,
             {
                 "RequestItems": {
                     "Table1": {
@@ -498,5 +498,5 @@ class BatchGetItemResponseUnitTests(_tst.UnitTests):
         unprocessed_keys = object()
         r = BatchGetItemResponse(ConsumedCapacity=[{}], Responses={"A": [{"h": {"S": "a"}}]}, UnprocessedKeys=unprocessed_keys)
         self.assertIsInstance(r.consumed_capacity[0], ConsumedCapacity)
-        self.assertEqual(r.responses, {"A": [{"h": u"a"}]})
+        self.assertEqual(r.responses, {"A": [{"h": "a"}]})
         self.assertIs(r.unprocessed_keys, unprocessed_keys)

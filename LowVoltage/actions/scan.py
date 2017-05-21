@@ -79,7 +79,7 @@ class ScanResponse(object):
         :type: ``None`` or long
         """
         if _is_int(self.__count):
-            return long(self.__count)
+            return int(self.__count)
 
     @property
     def items(self):
@@ -111,7 +111,7 @@ class ScanResponse(object):
         :type: ``None`` or long
         """
         if _is_int(self.__scanned_count):
-            return long(self.__scanned_count)
+            return int(self.__scanned_count)
 
 
 class Scan(Action):
@@ -322,7 +322,7 @@ class ScanUnitTests(_tst.UnitTests):
         self.assertEqual(Scan("Aaa").segment(0, 2).payload, {"TableName": "Aaa", "Segment": 0, "TotalSegments": 2})
 
     def test_exclusive_start_key(self):
-        self.assertEqual(Scan("Aaa").exclusive_start_key({"h": u"v"}).payload, {"TableName": "Aaa", "ExclusiveStartKey": {"h": {"S": "v"}}})
+        self.assertEqual(Scan("Aaa").exclusive_start_key({"h": "v"}).payload, {"TableName": "Aaa", "ExclusiveStartKey": {"h": {"S": "v"}}})
 
     def test_limit(self):
         self.assertEqual(Scan("Aaa").limit(4).payload, {"TableName": "Aaa", "Limit": 4})
@@ -340,7 +340,7 @@ class ScanUnitTests(_tst.UnitTests):
         self.assertEqual(Scan("Aaa").expression_attribute_name("n", "p").payload, {"TableName": "Aaa", "ExpressionAttributeNames": {"#n": "p"}})
 
     def test_expression_attribute_value(self):
-        self.assertEqual(Scan("Aaa").expression_attribute_value("n", u"p").payload, {"TableName": "Aaa", "ExpressionAttributeValues": {":n": {"S": "p"}}})
+        self.assertEqual(Scan("Aaa").expression_attribute_value("n", "p").payload, {"TableName": "Aaa", "ExpressionAttributeValues": {":n": {"S": "p"}}})
 
     def test_project(self):
         self.assertEqual(Scan("Aaa").project("a").payload, {"TableName": "Aaa", "ProjectionExpression": "a"})

@@ -112,7 +112,7 @@ class CreateTable(Action):
         if self.__attribute_definitions:
             data["AttributeDefinitions"] = [
                 {"AttributeName": name, "AttributeType": typ}
-                for name, typ in self.__attribute_definitions.iteritems()
+                for name, typ in self.__attribute_definitions.items()
             ]
         throughput = {}
         if self._read_capacity_units:
@@ -122,9 +122,9 @@ class CreateTable(Action):
         if throughput:
             data["ProvisionedThroughput"] = throughput
         if self.__gsis:
-            data["GlobalSecondaryIndexes"] = [i.payload for i in self.__gsis.itervalues()]
+            data["GlobalSecondaryIndexes"] = [i.payload for i in self.__gsis.values()]
         if self.__lsis:
-            data["LocalSecondaryIndexes"] = [i.payload for i in self.__lsis.itervalues()]
+            data["LocalSecondaryIndexes"] = [i.payload for i in self.__lsis.values()]
         return data
 
     class _Index(object):
@@ -144,7 +144,7 @@ class CreateTable(Action):
                 schema.append({"AttributeName": self._range_key, "KeyType": "RANGE"})
             if schema:
                 data["KeySchema"] = schema
-            if isinstance(self._projection, basestring):
+            if isinstance(self._projection, str):
                 data["Projection"] = {"ProjectionType": self._projection}
             elif self._projection:
                 data["Projection"] = {"ProjectionType": "INCLUDE", "NonKeyAttributes": self._projection}
@@ -299,7 +299,7 @@ class CreateTable(Action):
         self.__active_index._projection = "KEYS_ONLY"
         return self
 
-    @variadic(basestring)
+    @variadic(str)
     def project(self, *attrs):
         """
         Set ProjectionType to INCLUDE for the active index and add names to NonKeyAttributes.

@@ -8,7 +8,7 @@ import LowVoltage.testing as _tst
 
 class BatchPutItemLocalIntegTests(_tst.LocalIntegTestsWithTableH):
     def key(self, i):
-        return u"{:03}".format(i)
+        return "{:03}".format(i)
 
     def test(self):
         _lv.batch_put_item(self.connection, "Aaa", [{"h": self.key(i)} for i in range(100)])
